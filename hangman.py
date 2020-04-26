@@ -23,25 +23,26 @@ while not difficulty.isalpha():
 # Open the file
 # Create a list called words that will contain the words
 
-file = open(r"wordlist.txt",'r')
+file = open(r'wordlist.txt','r')
 words = []
 word = file.readline().strip().lower()
 
 # Choose word and number of lives based on difficulty
 
-while word.isalpha():
-        if difficulty == 'easy':
-                if len(word) <= 4:
-                        words.append(word)
-                        lives = 5
-        elif difficulty == 'medium':
-                if len(word)>= 4 and len(word) <= 6:
-                        words.append(word)
-                        lives = 4
-        elif difficulty == 'hard':
-                if len(word)>= 6 and len(word) <= 8:
-                        words.append(word)
-                        lives = 3
+while word:
+        if word.isalpha():
+                if difficulty == 'easy':
+                        if len(word) <= 4:
+                                words.append(word)
+                                lives = 5
+                elif difficulty == 'medium':
+                        if len(word)> 4 and len(word) <= 6:
+                                words.append(word)
+                                lives = 4
+                elif difficulty == 'hard':
+                        if len(word)> 6 and len(word) <= 8:
+                                words.append(word)
+                                lives = 3
         word = file.readline().strip().lower()
 
 # Use random to choose a random word from the list
@@ -62,19 +63,21 @@ def ask_letter():
     c = input('\nEnter a letter: ').strip().lower()
     if c.isalpha():
             while len(c) > 1:
-                    print('Error! Please enter just one letter!')
-                    c = input('Please re-enter a letter: ').strip().lower()
-                    if c in letter_list:
-                            tried_letters.append(c)
-                            letter_list.pop(letter_list.index(c))
-                            error = 0
-                    elif c not in letter_list:
-                            error = 1
-                            print('Error! Letter has been entered already. Please try other letter.')
-                            print('You have tried the following letters:', end =' ')
-                            print(*tried_letters, sep=' ')
-    else:
+                    print('Error! Please enter just one letter!\n')
+                    c = input('Please enter a letter: ').strip().lower()
+            if c in letter_list:
+                    tried_letters.append(c)
+                    letter_list.pop(letter_list.index(c))
+                    error = 0
+            elif c not in letter_list:
+                    error = 1
+                    print('Error! Letter has been entered already. Please try other letter.')
+                    print('You have tried the following letters:', end =' ')
+                    print(*tried_letters)
+    elif not c.isalpha():
             print('Plese enter a letter!')
+            error = 1
+            
     return c
 
 # Creates a list with the positions of the chosen letter in the word
@@ -95,14 +98,13 @@ while lives > 0:
             if error == 0:
                     letter_pos = get_letter_pos(letter)
                     for i in range(len(letter_pos)):
-                            hg[letter_pos[i]] = letter;
-    else:
-        if letter.isalpha():   
-                lives -= 1
-                print('\nWrong! You have {} heart(s) left!'.format(lives))
-        if lives == 0:
-                print('\nGame over! The word was {}!'.format(ranword))
-                break        
+                            hg[letter_pos[i]] = letter
+    elif letter not in letter_list and letter.isalpha() and letter not in ranword:
+            lives -= 1
+            print('\nWrong! You have {} heart(s) left!'.format(lives))
+    if lives == 0:
+            print('\nGame over! The word was {}!'.format(ranword))
+            break        
     if error == 0:
             print(*hg)    #print(*hg,sep=' ')  is also possible but *hg does the job (unpacking)  
 
