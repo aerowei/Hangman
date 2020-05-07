@@ -86,7 +86,7 @@ def get_letter_pos(letter):
     return [pos for (pos,char) in enumerate(ranword) if char == letter]
 
 # Print
-# I think I could've made this into a function as well, but fuck it.
+# I think I could've made this into a function as well, but eh - who cares.
 
 print(*hg)
 while lives > 0:
